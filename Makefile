@@ -6,20 +6,33 @@
 #    By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/17 13:52:28 by pfrances          #+#    #+#              #
-#    Updated: 2022/10/22 00:07:51 by pfrances         ###   ########.fr        #
+#    Updated: 2022/11/20 17:43:14 by pfrances         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = philo
 CC = cc
-CFLAGS = -Wall -Wextra -Werror -pthread
-SRCS =	philo.c init.c atoi_error_check.c check_end.c meals.c
-OBJS = $(SRCS:.c=.o)
+CFLAGS = -Wall -Wextra -Werror
+INCLUDE = -pthread
+SRCS_DIR = srcs
+OBJS_DIR = objs
+SRCS =	$(addprefix $(SRCS_DIR)/,	\
+		main.c						\
+		init.c						\
+		set_nbr.c					\
+		death_monitoring.c			\
+		meals.c						\
+		timming.c					\
+		writing_logs.c)
+OBJS = $(subst $(SRCS_DIR), $(OBJS_DIR), $(SRCS:.c=.o))
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
+	$(CC) $(CFLAGS) $(INCLUDE) $(OBJS) -o $(NAME)
+
+$(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
+	gcc -c $< -o $@
 
 clean:
 	rm -f $(OBJS)
