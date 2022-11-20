@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 14:55:34 by pfrances          #+#    #+#             */
-/*   Updated: 2022/11/20 16:45:46 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/11/20 17:49:55 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	free_memory(t_config *config)
 	free(config->forks);
 }
 
-void	stop_game(t_config *config)
+void	stop_simulation(t_config *config)
 {
 	size_t	i;
 
@@ -58,12 +58,14 @@ void	check_end(t_config *config)
 				config->info.can_continue = false;
 				printf("%ld %ld %s", time.time_us / 1000, i + 1, DIED);
 				pthread_mutex_unlock(&config->info.writing_logs_access);
-				stop_game(config);
+				stop_simulation(config);
 				return ;
 			}
 			i++;
 		}
 	}
+	pthread_mutex_lock(&config->info.writing_logs_access);
 	config->info.can_continue = false;
-	stop_game(config);
+	stop_simulation(config);
+	pthread_mutex_unlock(&config->info.writing_logs_access);
 }
