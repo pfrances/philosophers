@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 14:55:34 by pfrances          #+#    #+#             */
-/*   Updated: 2022/11/21 14:33:51 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/11/21 15:24:00 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,7 @@ void	stop_simulation(t_config *config)
 	}
 	pthread_mutex_destroy(&config->info.check_forks);
 	pthread_mutex_destroy(&config->info.writing_logs_access);
+	pthread_mutex_destroy(&config->info.decrease_total_meals);
 	free_memory(config);
 }
 

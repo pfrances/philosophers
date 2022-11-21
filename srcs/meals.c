@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 23:04:42 by pfrances          #+#    #+#             */
-/*   Updated: 2022/11/21 14:42:52 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/11/21 15:18:03 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,19 @@ bool	take_forks(t_philo *philo)
 	return (true);
 }
 
+void	update_eaten_meals(t_philo *philo)
+{
+	if (philo->meals_to_eat != SIZE_MAX)
+	{
+		pthread_mutex_lock(&philo->info->decrease_total_meals);
+		if (philo->info->total_meals != 0
+			&& philo->nbr_ate_meals < philo->meals_to_eat)
+		philo->info->total_meals--;
+		pthread_mutex_unlock(&philo->info->decrease_total_meals);
+	}
+	philo->nbr_ate_meals++;
+}
+
 bool	take_forks_and_eat(t_philo *philo)
 {
 	if (take_forks(philo) == false)
@@ -54,10 +67,7 @@ bool	take_forks_and_eat(t_philo *philo)
 	sleep_until(philo, philo->timmings.start_delay \
 		+ philo->nbr_ate_meals * (philo->timmings.time_to_one_circuit) \
 		+ philo->timmings.time_to_eat);
-	if (philo->meals_to_eat != SIZE_MAX && philo->info->total_meals != 0
-		&& philo->nbr_ate_meals < philo->meals_to_eat)
-		philo->info->total_meals--;
-	philo->nbr_ate_meals++;
+	update_eaten_meals(philo);
 	if (philo->philo_id % 2 == 0)
 	{
 		pthread_mutex_unlock(philo->right_forks);

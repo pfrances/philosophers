@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 13:52:55 by pfrances          #+#    #+#             */
-/*   Updated: 2022/11/21 14:32:54 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/11/21 15:09:26 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct s_global_info
 	struct timeval	start_time;
 	bool			ready_to_start;
 	size_t			total_meals;
+	pthread_mutex_t	decrease_total_meals;
 	pthread_mutex_t	check_forks;
 	pthread_mutex_t	writing_logs_access;
 	bool			can_continue;

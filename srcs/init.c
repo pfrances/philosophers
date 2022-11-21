@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/18 17:29:48 by pfrances          #+#    #+#             */
-/*   Updated: 2022/11/21 14:31:45 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/11/21 15:24:17 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ bool	set_global_infos(t_global_info *info, char **argv)
 	}
 	else
 		info->total_meals = SIZE_MAX;
+	pthread_mutex_init(&info->decrease_total_meals, NULL);
 	info->can_continue = true;
 	info->ready_to_start = false;
 	return (true);
