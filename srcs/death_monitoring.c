@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 14:55:34 by pfrances          #+#    #+#             */
-/*   Updated: 2022/11/20 17:49:55 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/11/21 10:00:45 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,8 +41,8 @@ void	stop_simulation(t_config *config)
 
 void	check_end(t_config *config)
 {
-	size_t		i;
-	t_timmings	time;
+	size_t			i;
+	t_timmings		time;
 
 	while (config->info.total_meals > 0)
 	{
@@ -54,10 +54,8 @@ void	check_end(t_config *config)
 			update_time(&config->philos[i]);
 			if (time.time_us - time.last_meal_timming > time.time_to_die + 1000)
 			{
-				pthread_mutex_lock(&config->info.writing_logs_access);
 				config->info.can_continue = false;
-				printf("%ld %ld %s", time.time_us / 1000, i + 1, DIED);
-				pthread_mutex_unlock(&config->info.writing_logs_access);
+				writing_logs(&config->philos[i], DIED);
 				stop_simulation(config);
 				return ;
 			}
@@ -66,6 +64,6 @@ void	check_end(t_config *config)
 	}
 	pthread_mutex_lock(&config->info.writing_logs_access);
 	config->info.can_continue = false;
-	stop_simulation(config);
 	pthread_mutex_unlock(&config->info.writing_logs_access);
+	stop_simulation(config);
 }
