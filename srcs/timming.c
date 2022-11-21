@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/22 00:43:28 by pfrances          #+#    #+#             */
-/*   Updated: 2022/11/20 16:47:01 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/11/21 14:43:59 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,18 +44,17 @@ void	set_philos_timming(t_philo *philo, t_timmings *default_timmings)
 	{
 		if (time->time_to_eat > time->time_to_sleep)
 			time->time_to_think = time->time_to_eat - time->time_to_sleep;
-		else
-			time->time_to_think = 0;
 	}
 	else
 	{
 		if (time->time_to_eat * 2 > time->time_to_sleep)
 			time->time_to_think = time->time_to_eat * 2 - time->time_to_sleep;
-		else
-			time->time_to_think = 0;
 	}
 	time->time_to_one_circuit = time->time_to_eat \
 		+ time->time_to_sleep + time->time_to_think;
+	if (time->time_to_die > time->time_to_one_circuit)
+		time->start_delay += (philo->philo_id * 100) \
+			% ((time->time_to_die - time->time_to_one_circuit) / 2);
 }
 
 size_t	get_time(struct timeval start)
@@ -69,7 +68,7 @@ size_t	get_time(struct timeval start)
 
 void	update_time(t_philo *philo)
 {
-	philo->timmings.time_us = get_time(philo->timmings.start_time);
+	philo->timmings.time_us = get_time(philo->info->start_time);
 }
 
 void	sleep_until(t_philo *philo, size_t time_to_awake)

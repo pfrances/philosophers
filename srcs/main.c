@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 13:52:44 by pfrances          #+#    #+#             */
-/*   Updated: 2022/11/20 16:43:17 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/11/21 14:32:54 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ bool	do_think(t_philo *philo)
 
 bool	wait_before_starting(t_philo *philo)
 {
+	while (philo->info->ready_to_start == false)
+		usleep(1);
 	if (philo->timmings.start_delay == 0)
 		return (true);
 	philo->state = IS_THINKING;
@@ -53,7 +55,6 @@ void	*philo_daily_life(void *arg)
 	t_philo	*philo;
 
 	philo = (t_philo *)arg;
-	gettimeofday(&philo->timmings.start_time, NULL);
 	if (wait_before_starting(philo) == false)
 		return (NULL);
 	while (philo->info->total_meals > 0)
@@ -84,7 +85,7 @@ int	main(int argc, char *argv[])
 			i++;
 		}
 		i = 0;
-		check_end(&config);
+		philos_monitoring(&config);
 	}
 	return (0);
 }

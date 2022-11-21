@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/26 15:26:53 by pfrances          #+#    #+#             */
-/*   Updated: 2022/11/21 10:00:07 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/11/21 13:49:54 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,13 @@ static int	ft_strncmp(const char *s1, const char *s2, size_t n)
 
 bool	writing_logs(t_philo *philo, char *msg)
 {
+	update_time(philo);
 	pthread_mutex_lock(&philo->info->writing_logs_access);
-	if (philo->info->can_continue == false && ft_strncmp(msg, DIED, 6) != 0)
+	if (philo->info->can_continue == false)
 	{
 		pthread_mutex_unlock(&philo->info->writing_logs_access);
 		return (false);
 	}
-	update_time(philo);
 	printf("%ld %ld %s", philo->timmings.time_us / 1000, philo->philo_id, msg);
 	pthread_mutex_unlock(&philo->info->writing_logs_access);
 	return (true);

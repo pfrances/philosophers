@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 13:52:55 by pfrances          #+#    #+#             */
-/*   Updated: 2022/11/20 18:00:22 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/11/21 14:32:54 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,6 @@ typedef enum e_philo_state
 
 typedef struct s_timmings
 {
-	struct timeval	start_time;
 	size_t			time_us;
 	size_t			time_to_die;
 	size_t			time_to_eat;
@@ -59,6 +58,8 @@ typedef struct s_global_info
 {
 	size_t			nb_philo;
 	t_timmings		default_timmings;
+	struct timeval	start_time;
+	bool			ready_to_start;
 	size_t			total_meals;
 	pthread_mutex_t	check_forks;
 	pthread_mutex_t	writing_logs_access;
@@ -96,7 +97,7 @@ void	set_philos_info(t_config *config);
 bool	set_philo_and_forks(t_config *config);
 
 /*		check_death.c			*/
-void	check_end(t_config *game);
+void	philos_monitoring(t_config *game);
 
 /*		meals.c					*/
 bool	eat(t_philo *philo);

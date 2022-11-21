@@ -6,7 +6,7 @@
 #    By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/17 13:52:28 by pfrances          #+#    #+#              #
-#    Updated: 2022/11/21 10:03:35 by pfrances         ###   ########.fr        #
+#    Updated: 2022/11/21 14:50:11 by pfrances         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ SRCS =	$(addprefix $(SRCS_DIR)/,	\
 		timming.c					\
 		writing_logs.c)
 OBJS = $(subst $(SRCS_DIR), $(OBJS_DIR), $(SRCS:.c=.o))
+RM = rm -f
 
 all: $(NAME)
 
@@ -32,13 +33,13 @@ $(NAME): $(OBJS)
 	$(CC) $(CFLAGS) $(INCLUDE) $(OBJS) -o $(NAME)
 
 $(OBJS_DIR)/%.o: $(SRCS_DIR)/%.c
-	gcc -c $< -o $@
+	$(CC) -c $< -o $@
 
 clean:
-	rm -f $(OBJS)
+	$(RM) $(OBJS)
 
 fclean: clean
-	rm -f $(NAME)
+	$(RM) $(NAME)
 
 re: fclean all
 

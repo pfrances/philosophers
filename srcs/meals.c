@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 23:04:42 by pfrances          #+#    #+#             */
-/*   Updated: 2022/11/20 17:41:05 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/11/21 14:42:52 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,18 +48,26 @@ bool	take_forks_and_eat(t_philo *philo)
 {
 	if (take_forks(philo) == false)
 		return (false);
+	philo->timmings.last_meal_timming = philo->timmings.time_us;
 	if (writing_logs(philo, EAT_MSG) == false)
 		return (release_fork(philo, BOTH));
-	philo->timmings.last_meal_timming = philo->timmings.time_us;
 	sleep_until(philo, philo->timmings.start_delay \
 		+ philo->nbr_ate_meals * (philo->timmings.time_to_one_circuit) \
 		+ philo->timmings.time_to_eat);
-	if (philo->meals_to_eat != SIZE_MAX
+	if (philo->meals_to_eat != SIZE_MAX && philo->info->total_meals != 0
 		&& philo->nbr_ate_meals < philo->meals_to_eat)
 		philo->info->total_meals--;
 	philo->nbr_ate_meals++;
-	pthread_mutex_unlock(philo->right_forks);
-	pthread_mutex_unlock(philo->left_forks);
+	if (philo->philo_id % 2 == 0)
+	{
+		pthread_mutex_unlock(philo->right_forks);
+		pthread_mutex_unlock(philo->left_forks);
+	}
+	else
+	{
+		pthread_mutex_unlock(philo->left_forks);
+		pthread_mutex_unlock(philo->right_forks);
+	}
 	return (true);
 }
 

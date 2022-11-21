@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 14:55:34 by pfrances          #+#    #+#             */
-/*   Updated: 2022/11/21 10:00:45 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/11/21 14:33:51 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,28 +39,43 @@ void	stop_simulation(t_config *config)
 	free_memory(config);
 }
 
-void	check_end(t_config *config)
+bool	check_and_write_death(t_config *config)
 {
-	size_t			i;
-	t_timmings		time;
+	size_t		i;
+	t_timmings	time;
 
+	i = 0;
+	while (i < config->info.nb_philo)
+	{
+		time = config->philos[i].timmings;
+		update_time(&config->philos[i]);
+		pthread_mutex_lock(&config->philos[i].info->writing_logs_access);
+		if (time.time_us - time.last_meal_timming > time.time_to_die + 1000)
+		{
+			if (config->philos[i].info->total_meals > 0)
+				printf("%ld %ld %s",
+					config->philos[i].timmings.time_us / 1000,
+					config->philos[i].philo_id, DIED);
+			config->philos[i].info->can_continue = false;
+			pthread_mutex_unlock(&config->philos[i].info->writing_logs_access);
+			stop_simulation(config);
+			return (true);
+		}
+		pthread_mutex_unlock(&config->philos[i].info->writing_logs_access);
+		i++;
+	}
+	return (false);
+}
+
+void	philos_monitoring(t_config *config)
+{
+	gettimeofday(&config->info.start_time, NULL);
+	config->info.ready_to_start = true;
 	while (config->info.total_meals > 0)
 	{
-		usleep(100);
-		i = 0;
-		while (i < config->info.nb_philo)
-		{
-			time = config->philos[i].timmings;
-			update_time(&config->philos[i]);
-			if (time.time_us - time.last_meal_timming > time.time_to_die + 1000)
-			{
-				config->info.can_continue = false;
-				writing_logs(&config->philos[i], DIED);
-				stop_simulation(config);
-				return ;
-			}
-			i++;
-		}
+		if (check_and_write_death(config) == true)
+			return ;
+		usleep(200);
 	}
 	pthread_mutex_lock(&config->info.writing_logs_access);
 	config->info.can_continue = false;
