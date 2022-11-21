@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 23:04:42 by pfrances          #+#    #+#             */
-/*   Updated: 2022/11/21 15:18:03 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/11/21 15:33:26 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,7 @@ bool	eat(t_philo *philo)
 			break ;
 		}
 		pthread_mutex_unlock(philo->check_forks);
+		usleep(1);
 	}
 	return (true);
 }
