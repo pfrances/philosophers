@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 23:04:42 by pfrances          #+#    #+#             */
-/*   Updated: 2022/11/21 15:33:26 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/13 18:31:09 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,9 +64,13 @@ bool	take_forks_and_eat(t_philo *philo)
 	philo->timmings.last_meal_timming = philo->timmings.time_us;
 	if (writing_logs(philo, EAT_MSG) == false)
 		return (release_fork(philo, BOTH));
-	sleep_until(philo, philo->timmings.start_delay \
-		+ philo->nbr_ate_meals * (philo->timmings.time_to_one_circuit) \
-		+ philo->timmings.time_to_eat);
+	if (ZURUI)
+		sleep_until(philo, philo->timmings.start_delay \
+			+ philo->nbr_ate_meals * (philo->timmings.time_to_one_circuit) \
+			+ philo->timmings.time_to_eat);
+	else
+		sleep_until(philo,
+			philo->timmings.last_meal_timming + philo->timmings.time_to_eat);
 	update_eaten_meals(philo);
 	if (philo->philo_id % 2 == 0)
 	{

@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 13:52:55 by pfrances          #+#    #+#             */
-/*   Updated: 2022/11/21 15:09:26 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/13 18:29:57 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,9 @@
 # define SLEEP_MSG "is sleeping\n"
 # define THINK_MSG "is thinking\n"
 # define DIED "died\n"
+# ifndef ZURUI
+#  define ZURUI 0
+# endif
 
 typedef enum e_wich_forks
 {

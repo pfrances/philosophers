@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 13:52:44 by pfrances          #+#    #+#             */
-/*   Updated: 2022/11/21 14:32:54 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/13 18:31:19 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,13 @@ bool	do_sleep(t_philo *philo)
 	philo->state = IS_SLEEPING;
 	if (writing_logs(philo, SLEEP_MSG) == false)
 		return (false);
-	sleep_until(philo, philo->timmings.start_delay \
-		+ (philo->nbr_ate_meals * philo->timmings.time_to_one_circuit) \
-		- philo->timmings.time_to_think);
+	if (ZURUI)
+		sleep_until(philo, philo->timmings.start_delay \
+			+ (philo->nbr_ate_meals * philo->timmings.time_to_one_circuit) \
+			- philo->timmings.time_to_think);
+	else
+		sleep_until(philo, philo->timmings.last_meal_timming \
+			+ philo->timmings.time_to_eat + philo->timmings.time_to_think);
 	return (true);
 }
 

@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/21 14:55:34 by pfrances          #+#    #+#             */
-/*   Updated: 2022/11/21 15:24:00 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/11/21 15:37:46 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ void	philos_monitoring(t_config *config)
 	{
 		if (check_and_write_death(config) == true)
 			return ;
-		usleep(200);
+		usleep(100);
 	}
 	pthread_mutex_lock(&config->info.writing_logs_access);
 	config->info.can_continue = false;
