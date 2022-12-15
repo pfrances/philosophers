@@ -6,7 +6,7 @@
 /*   By: pfrances <pfrances@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/17 13:52:44 by pfrances          #+#    #+#             */
-/*   Updated: 2022/12/13 18:31:19 by pfrances         ###   ########.fr       */
+/*   Updated: 2022/12/15 12:00:09 by pfrances         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ bool	do_sleep(t_philo *philo)
 			- philo->timmings.time_to_think);
 	else
 		sleep_until(philo, philo->timmings.last_meal_timming \
-			+ philo->timmings.time_to_eat + philo->timmings.time_to_think);
+			+ philo->timmings.time_to_eat + philo->timmings.time_to_sleep);
 	return (true);
 }
 
